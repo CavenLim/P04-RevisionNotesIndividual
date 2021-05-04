@@ -22,13 +22,31 @@ public class SecondActivity extends AppCompatActivity {
 
 		Intent i = getIntent();
 		boolean isGood = i.getBooleanExtra("isGood",false);
-
 		lv=findViewById(R.id.lv);
 		DBHelper db = new DBHelper(SecondActivity.this);
 		notes = db.getAllNotes();
-		db.close();
-		aa = new RevisionNotesArrayAdapter(SecondActivity.this,R.layout.row,notes);
-		lv.setAdapter(aa);
+
+		newNote = new ArrayList<>();
+
+		if(isGood){
+			for(int d = 0;d<notes.size();d++){
+				if(notes.get(d).getStars() > 3) {
+					newNote.add(notes.get(d));
+				}
+			}
+			aa = new RevisionNotesArrayAdapter(SecondActivity.this,R.layout.row,newNote);
+			lv.setAdapter(aa);
+			db.close();
+		}
+		else if (!isGood){
+			aa = new RevisionNotesArrayAdapter(SecondActivity.this,R.layout.row,notes);
+			lv.setAdapter(aa);
+			db.close();
+		}
+
+
+
+
 
 	}
 

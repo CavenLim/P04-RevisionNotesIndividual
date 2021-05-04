@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnInsert=findViewById(R.id.buttonInsertNote);
         btnShow=findViewById(R.id.buttonShowList);
-     
+        btnGood = findViewById(R.id.buttonGood);
+
 
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnGood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                intent.putExtra("isGood",true);
                 startActivity(intent);
             }
         });
