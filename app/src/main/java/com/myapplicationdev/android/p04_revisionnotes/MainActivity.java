@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -16,11 +17,11 @@ public class MainActivity extends AppCompatActivity {
     EditText note;
     RadioGroup rgStars;
     RadioButton rb;
-    Button btnInsert,btnShow;
+    Button btnInsert,btnShow,btnGood;
     int selectedStar ;
     String noteContent;
     ArrayList<Note> notes;
-    ArrayList<Note> notesFetched;
+    ArrayList<String> notesFetched;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnInsert=findViewById(R.id.buttonInsertNote);
         btnShow=findViewById(R.id.buttonShowList);
+        btnGood = findViewById(R.id.buttonGood);
 
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,12 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 rb = findViewById( rgStars.getCheckedRadioButtonId());
                 noteContent=note.getText().toString();
                 if (!noteContent.isEmpty()){
+                    notesFetched = db.getNoteContent();
+                        if (!notesFetched.contains(noteContent)){
+                            db.insertNote(noteContent,Integer.valueOf(rb.getText().toString()));
+                            db.close();
+                            Toast.makeText(MainActivity.this, "Inserted",
+                                    Toast.LENGTH_LONG).show();
+                        }
 
-
-
-                        // Insert a task
-                        db.insertNote(noteContent,Integer.valueOf(rb.getText().toString()));
-                    db.close();
                 }
 
 
@@ -56,6 +60,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnGood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                intent.putExtra("isGood",true);
                 startActivity(intent);
             }
         });
